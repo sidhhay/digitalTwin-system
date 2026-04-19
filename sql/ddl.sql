@@ -73,3 +73,4 @@ CREATE TABLE Alert (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (risk_id) REFERENCES Risk_Assessment(risk_id)
 );
+    

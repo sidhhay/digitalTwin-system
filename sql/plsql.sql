@@ -76,3 +76,32 @@ BEGIN
         );
 END;
 /
+--functions
+--avg_glucose calculating function
+CREATE OR REPLACE FUNCTION get_avg_glucose(p_id NUMBER)
+RETURN NUMBER
+IS
+    avg_val NUMBER;
+BEGIN
+    SELECT AVG(glucose_level)
+    INTO avg_val
+    FROM Glucose_Reading
+    WHERE patient_id = p_id;
+
+    RETURN avg_val;
+END;
+/
+--predict risk function
+CREATE OR REPLACE FUNCTION calculate_risk(p_avg NUMBER)
+RETURN VARCHAR2
+IS
+BEGIN
+    IF p_avg < 140 THEN
+        RETURN 'LOW';
+    ELSIF p_avg < 180 THEN
+        RETURN 'MEDIUM';
+    ELSE
+        RETURN 'HIGH';
+    END IF;
+END;
+/

@@ -105,3 +105,37 @@ BEGIN
     END IF;
 END;
 /
+--CURSORS
+--To predict risk
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_high_risk IS
+        SELECT 
+            patient_id,
+            AVG(glucose_level) AS avg_glucose
+        FROM Glucose_Reading
+        GROUP BY patient_id
+        HAVING AVG(glucose_level) > 180;
+
+    v_id NUMBER;
+    v_avg NUMBER;
+
+BEGIN
+    OPEN c_high_risk;
+
+    LOOP
+        FETCH c_high_risk INTO v_id, v_avg;
+        EXIT WHEN c_high_risk%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE(
+            ' High Risk Patient: ' || v_id ||
+            ' | Avg Glucose: ' || v_avg
+        );
+
+    END LOOP;
+
+    CLOSE c_high_risk;
+END;
+/
